@@ -75,7 +75,10 @@ namespace OOP_RPG
 
         private void Fight()
         {
-            var fight = new Fight(Hero);
+            var monsterSelector = new MonsterSelector();
+            var enemy = monsterSelector.SelectMonsterBasedOnWeekDay();
+
+            var fight = new Fight(Hero, enemy);
 
             fight.Start();
         }
