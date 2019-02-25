@@ -9,6 +9,28 @@ namespace OOP_RPG
         // These are the Properties of our Class.
         public string Name { get; set; }
         public int Strength { get; }
+        public int CalculatedStrength
+        {
+            get
+            {
+                return Strength + 
+                    (EquippedWeapon == null ? 
+                    0 : 
+                    EquippedWeapon.Strength);
+            }
+        }
+        public int CalculatedDefense
+        {
+            get
+            {
+                //Syntax sugar
+                //return Defense + EquippedArmor?.Defense ?? 0;
+
+                return Defense + (EquippedArmor == null ?
+                    0:
+                    EquippedArmor.Defense);
+            }
+        }
         public int Defense { get; }
         public int OriginalHP { get; set; }
         public int CurrentHP { get; set; }
@@ -16,6 +38,7 @@ namespace OOP_RPG
         public Armor EquippedArmor { get; private set; }
         public List<Armor> ArmorsBag { get; set; }
         public List<Weapon> WeaponsBag { get; set; }
+        public int GoldCoins { get; set; }
 
         /*This is a Constructor.
         When we create a new object from our Hero class, the instance of this class, our hero, has:
@@ -32,14 +55,17 @@ namespace OOP_RPG
             Defense = 10;
             OriginalHP = 30;
             CurrentHP = 30;
+            GoldCoins = 500;
         }
 
         //These are the Methods of our Class.
         public void ShowStats()
         {
             Console.WriteLine("*****" + this.Name + "*****");
-            Console.WriteLine("Strength: " + this.Strength);
-            Console.WriteLine("Defense: " + this.Defense);
+            Console.WriteLine($"Strength: {this.Strength} " +
+                $"{(this.EquippedWeapon == null ? "" : "(+"+ this.EquippedWeapon.Strength +")")}");
+            Console.WriteLine($"Defense: {this.Defense} " +
+                $"{(this.EquippedArmor == null ? "" : "(+" + this.EquippedArmor.Defense + ")")}");
             Console.WriteLine("Hitpoints: " + this.CurrentHP + "/" + this.OriginalHP);
         }
 
@@ -61,20 +87,24 @@ namespace OOP_RPG
             }
         }
 
-        public void EquipWeapon()
+        public void EquipWeapon(int index)
         {
-            if (WeaponsBag.Any())
-            {
-                this.EquippedWeapon = this.WeaponsBag[0];
-            }
+            this.EquippedWeapon = this.WeaponsBag[index];
         }
 
-        public void EquipArmor()
+        public void EquipArmor(int index)
         {
-            if (ArmorsBag.Any())
-            {
-                this.EquippedArmor = this.ArmorsBag[0];
-            }
+            this.EquippedArmor = this.ArmorsBag[index];
+        }
+
+        public void UnequipWeapon()
+        {
+            EquippedWeapon = null;
+        }
+
+        public void UnequipArmor()
+        {
+            EquippedArmor = null;
         }
     }
 }

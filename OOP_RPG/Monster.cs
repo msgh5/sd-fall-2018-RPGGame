@@ -23,5 +23,31 @@ namespace OOP_RPG
             Dificulty = dificulty;
             RespawnDay = respawnDay;
         }
+
+        public int DropLoot()
+        {
+            if (CurrentHP > 0)
+            {
+                throw new Exception("Monster is still alive");
+            }
+
+            var random = new Random();
+            int goldCoins = 0;
+
+            if (Dificulty == MonsterDificulty.Easy)
+            {
+                goldCoins = random.Next(1, 11);
+            }
+            else if (Dificulty == MonsterDificulty.Medium)
+            {
+                goldCoins = random.Next(11, 21);
+            }
+            else if (Dificulty == MonsterDificulty.Hard)
+            {
+                goldCoins = random.Next(21, 31);
+            }
+
+            return goldCoins;
+        }
     }
 }

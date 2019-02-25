@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace OOP_RPG
 {
@@ -8,11 +6,13 @@ namespace OOP_RPG
     {
         private Hero Hero { get; }
         private Monster Enemy { get; set; }
+        private DamageCalculator DamageCalculator { get; }
 
-        public Fight(Hero hero, Monster enemy)
+        public Fight(Hero hero, Monster enemy, DamageCalculator calculator)
         {
             Hero = hero;
             Enemy = enemy;
+            DamageCalculator = calculator;
         }
 
         public void Start()
@@ -34,50 +34,34 @@ namespace OOP_RPG
         }
 
         private void HeroTurn()
-        {
-            var compare = Hero.Strength - Enemy.Defense;
-            int damage;
+        {   
+            var baseDamage = Hero.CalculatedStrength - Enemy.Defense;
 
-            if (compare <= 0)
-            {
-                damage = 1;
-                Enemy.CurrentHP -= damage;
-            }
-            else
-            {
-                damage = compare;
-                Enemy.CurrentHP -= damage;
-            }
+            var finalDamage = DamageCalculator.CalculateDamage(baseDamage);
 
-            Console.WriteLine("You did " + damage + " damage!");
+            Enemy.CurrentHP -= finalDamage;
+
+            Console.WriteLine("You did " + finalDamage + " damage!");
 
             if (Enemy.CurrentHP <= 0)
             {
                 Win();
             }
             else
-            {   
+            {
                 MonsterTurn();
             }
         }
 
         private void MonsterTurn()
         {
-            int damage;
-            var compare = Enemy.Strength - Hero.Defense;
+            var baseDamage = Enemy.Strength - Hero.CalculatedDefense;
 
-            if (compare <= 0)
-            {
-                damage = 1;
-                Hero.CurrentHP -= damage;
-            }
-            else
-            {
-                damage = compare;
-                Hero.CurrentHP -= damage;
-            }
+            var finalDamage = DamageCalculator.CalculateDamage(baseDamage);
 
-            Console.WriteLine(Enemy.Name + " does " + damage + " damage!");
+            Hero.CurrentHP -= finalDamage;
+
+            Console.WriteLine(Enemy.Name + " does " + finalDamage + " damage!");
 
             if (Hero.CurrentHP <= 0)
             {
@@ -87,6 +71,10 @@ namespace OOP_RPG
 
         private void Win()
         {
+            var goldCoins = Enemy.DropLoot();
+
+            Hero.GoldCoins += goldCoins;
+
             Console.WriteLine(Enemy.Name + " has been defeated! You win the battle!");
         }
 
