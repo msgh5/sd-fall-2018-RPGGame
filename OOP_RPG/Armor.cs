@@ -1,6 +1,6 @@
 namespace OOP_RPG
 {
-    public class Armor : IShopItem
+    public class Armor : IArmor
     {
         public string Name { get; }
         public int Defense { get; }

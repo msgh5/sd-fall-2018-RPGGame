@@ -85,9 +85,11 @@ namespace OOP_RPG
 
             if (keyboardInput == "1")
             {
-                for (var i = 0; i < Hero.WeaponsBag.Count(); i++)
+                var weapons = Hero.GetWeapons();
+
+                for (var i = 0; i < weapons.Count(); i++)
                 {
-                    Console.WriteLine($"{i + 1} - {Hero.WeaponsBag[i].Name}");
+                    Console.WriteLine($"{i + 1} - {weapons[i].Name}");
                 }
 
                 var index = Convert.ToInt32(Console.ReadLine())-1;
@@ -96,9 +98,11 @@ namespace OOP_RPG
             }
             else if (keyboardInput == "2")
             {
-                for (var i = 0; i < Hero.ArmorsBag.Count(); i++)
+                var armors = Hero.GetArmors();
+
+                for (var i = 0; i < armors.Count(); i++)
                 {
-                    Console.WriteLine($"{i + 1} - {Hero.ArmorsBag[i].Name}");
+                    Console.WriteLine($"{i + 1} - {armors[i].Name}");
                 }
 
                 var index = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -107,11 +111,11 @@ namespace OOP_RPG
             }
             else if (keyboardInput == "3")
             {
-                Hero.UnequipWeapon();
+                Hero.UnEquipWeapon();
             }
             else if (keyboardInput == "4")
             {
-                Hero.UnequipArmor();
+                Hero.UnEquipArmor();
             }
         }
 

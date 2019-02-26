@@ -66,29 +66,13 @@ namespace OOP_RPG
             {
                 if (Hero.GoldCoins >= item.Price)
                 {
-                    AddItemToHero(item);
                     Hero.GoldCoins -= item.Price;
+                    Hero.Bag.Add(item);
                 }
                 else
                 {
                     Console.WriteLine("You don't have enough gold coins.");
                 }
-            }
-        }
-
-        /// <summary>
-        /// This is not good and should be refactored.
-        /// </summary>
-        /// <param name="item"></param>
-        private void AddItemToHero(IShopItem item)
-        {
-            if (item is Weapon)
-            {
-                Hero.WeaponsBag.Add((Weapon)item);
-            }
-            else if (item is Armor)
-            {
-                Hero.ArmorsBag.Add((Armor)item);
             }
         }
     }

@@ -34,10 +34,9 @@ namespace OOP_RPG
         public int Defense { get; }
         public int OriginalHP { get; set; }
         public int CurrentHP { get; set; }
-        public Weapon EquippedWeapon { get; private set; }
-        public Armor EquippedArmor { get; private set; }
-        public List<Armor> ArmorsBag { get; set; }
-        public List<Weapon> WeaponsBag { get; set; }
+        public IWeapon EquippedWeapon { get; private set; }
+        public IArmor EquippedArmor { get; private set; }
+        public List<IShopItem> Bag { get; private set; }
         public int GoldCoins { get; set; }
 
         /*This is a Constructor.
@@ -49,8 +48,7 @@ namespace OOP_RPG
         */
         public Hero()
         {
-            ArmorsBag = new List<Armor>();
-            WeaponsBag = new List<Weapon>();
+            Bag = new List<IShopItem>();
             Strength = 10;
             Defense = 10;
             OriginalHP = 30;
@@ -74,37 +72,49 @@ namespace OOP_RPG
             Console.WriteLine("*****  INVENTORY ******");
             Console.WriteLine("Weapons: ");
 
-            foreach (var weapon in this.WeaponsBag)
+            foreach (var weapon in GetWeapons())
             {
                 Console.WriteLine(weapon.Name + " of " + weapon.Strength + " Strength");
             }
 
             Console.WriteLine("Armor: ");
 
-            foreach (var armor in this.ArmorsBag)
+            foreach (var armor in GetArmors())
             {
                 Console.WriteLine(armor.Name + " of " + armor.Defense + " Defense");
             }
         }
 
-        public void EquipWeapon(int index)
-        {
-            this.EquippedWeapon = this.WeaponsBag[index];
-        }
-
         public void EquipArmor(int index)
         {
-            this.EquippedArmor = this.ArmorsBag[index];
+            var armor = GetArmors()[index];
+            this.EquippedArmor = armor;
         }
 
-        public void UnequipWeapon()
+        public void EquipWeapon(int index)
         {
-            EquippedWeapon = null;
+            var weapon = GetWeapons()[index];
+            this.EquippedWeapon = weapon;
         }
 
-        public void UnequipArmor()
+        public void UnEquipArmor()
         {
-            EquippedArmor = null;
+            this.EquippedArmor = null;
+        }
+
+        public void UnEquipWeapon()
+        {
+            this.EquippedWeapon = null;
+        }
+
+        public IReadOnlyList<IWeapon> GetWeapons()
+        {
+            return Bag.Where(p => p is IWeapon).Cast<IWeapon>().ToList();
+        }
+
+        public IReadOnlyList<IArmor> GetArmors()
+        {
+            return Bag.Where(p => p is IArmor).Cast<IArmor>().ToList();
         }
     }
 }

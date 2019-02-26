@@ -48,7 +48,9 @@
     <Compile Include="Fight.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Hero.cs" />
+    <Compile Include="IArmor.cs" />
     <Compile Include="IShopItem.cs" />
+    <Compile Include="IWeapon.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterDificulty.cs" />
     <Compile Include="MonsterSelector.cs" />
