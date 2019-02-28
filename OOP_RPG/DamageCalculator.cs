@@ -17,6 +17,11 @@ namespace OOP_RPG
 
         public int CalculateDamage(int baseDamage)
         {
+            if (baseDamage <= 0)
+            {
+                return 1;
+            }
+
             var minDamage = Convert.ToInt32(baseDamage * 0.5);
             var maxDamage = Convert.ToInt32(baseDamage * 1.5);
             var finalDamage = Random.Next(minDamage, maxDamage + 1);

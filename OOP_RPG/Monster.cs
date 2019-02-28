@@ -49,5 +49,27 @@ namespace OOP_RPG
 
             return goldCoins;
         }
+
+        public int GetRunAwayChance()
+        {
+            if (Dificulty == MonsterDificulty.Easy)
+            {
+                return 50;
+            }
+            else if (Dificulty == MonsterDificulty.Medium)
+            {
+                return 25;
+            }
+            else if (Dificulty == MonsterDificulty.Hard)
+            {
+                return 5;
+            }
+            else
+            {
+                throw new NotImplementedException(
+                    $"Dificulty not implemented: {Dificulty}");
+            }
+
+        }
     }
 }

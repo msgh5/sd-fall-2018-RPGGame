@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OOP_RPG
 {
-    public interface IShopItem
+    public interface IAchievement
     {
         string Name { get; }
-        int Price { get; }
-        string GetDescription(bool useResellValue = false);
-        int ResellValue { get; }
+        int Points { get; }
+
+        bool Check(Hero hero);
     }
 }

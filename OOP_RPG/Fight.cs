@@ -7,12 +7,17 @@ namespace OOP_RPG
         private Hero Hero { get; }
         private Monster Enemy { get; set; }
         private DamageCalculator DamageCalculator { get; }
+        private AchievementManager AchievementManager { get; }
 
-        public Fight(Hero hero, Monster enemy, DamageCalculator calculator)
+        public Fight(Hero hero, 
+            Monster enemy, 
+            DamageCalculator calculator,
+            AchievementManager achievementManager)
         {
             Hero = hero;
             Enemy = enemy;
             DamageCalculator = calculator;
+            AchievementManager = achievementManager;
         }
 
         public void Start()
@@ -23,6 +28,8 @@ namespace OOP_RPG
                 Enemy.CurrentHP + " HP. What will you do?");
 
                 Console.WriteLine("1. Fight");
+                Console.WriteLine("2. Heal");
+                Console.WriteLine("3. Run Away");
 
                 var input = Console.ReadLine();
 
@@ -30,7 +37,42 @@ namespace OOP_RPG
                 {
                     HeroTurn();
                 }
+                else if (input == "2")
+                {
+                    Heal();
+                }
+                else if (input == "3")
+                {
+                    RunAway();
+                }
             }
+        }
+
+        private void RunAway()
+        {
+            var random = new Random();
+            var monsterChance = Enemy.GetRunAwayChance();
+            var result = random.Next(1, 101);
+
+            if (result <= monsterChance)
+            {
+                Console.WriteLine("You ran away from the monster");
+                Enemy.CurrentHP = 0;
+            }
+            else
+            {
+                Console.WriteLine("You failed to run away");
+                MonsterTurn();
+            }
+        }
+        
+        private void Heal()
+        {
+            Hero.ShowPotions();
+
+            var index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            Hero.DrinkPotion(index);
         }
 
         private void HeroTurn()
@@ -74,6 +116,8 @@ namespace OOP_RPG
             var goldCoins = Enemy.DropLoot();
 
             Hero.GoldCoins += goldCoins;
+            Hero.AddKillHistory(Enemy.Name);
+            AchievementManager.CheckAchievements(Hero);
 
             Console.WriteLine(Enemy.Name + " has been defeated! You win the battle!");
         }

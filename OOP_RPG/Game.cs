@@ -28,14 +28,15 @@ namespace OOP_RPG
         {
             var input = "0";
 
-            while (input != "5")
+            while (input != "6")
             {
                 Console.WriteLine("Please choose an option by entering a number.");
                 Console.WriteLine("1. View Stats");
                 Console.WriteLine("2. View Inventory");
                 Console.WriteLine("3. Fight Monster");
                 Console.WriteLine("4. Visit Shop");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Check Achievements");
+                Console.WriteLine("6. Exit");
 
                 input = Console.ReadLine();
 
@@ -55,11 +56,31 @@ namespace OOP_RPG
                 {
                     this.Shop();
                 }
+                else if (input == "5")
+                {
+                    this.CheckAchievements();
+                }
 
                 if (Hero.CurrentHP <= 0)
                 {
                     return;
                 }
+            }
+        }
+
+        private void CheckAchievements()
+        {
+            var completedAchievements = Hero.GetAchievements();
+            var totalPoints = completedAchievements
+                .Sum(p => p.Achievement.Points);
+
+            Console.WriteLine($"Achievements " +
+                $"({totalPoints})");
+
+            foreach(var completedAchievement in completedAchievements)
+            {
+                Console.WriteLine($"{completedAchievement.Achievement.Name}" +
+                    $"- {completedAchievement.Date.ToString("dd/MM/yyyy HH:mm")}");
             }
         }
 
@@ -80,6 +101,9 @@ namespace OOP_RPG
             Console.WriteLine("2 - Equip Armor");
             Console.WriteLine("3 - Unequip Weapon");
             Console.WriteLine("4 - Unequip Armor");
+            Console.WriteLine("5 - Drink Potion");
+            Console.WriteLine("6 - Equip Shield");
+            Console.WriteLine("7 - Unequip Shield");
 
             var keyboardInput = Console.ReadLine();
 
@@ -117,15 +141,41 @@ namespace OOP_RPG
             {
                 Hero.UnEquipArmor();
             }
+            else if (keyboardInput == "5")
+            {
+                Hero.ShowPotions();
+
+                var index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                Hero.DrinkPotion(index);
+            }
+            else if (keyboardInput == "6")
+            {
+                var shields = Hero.GetShields();
+
+                for (var i = 0; i < shields.Count(); i++)
+                {
+                    Console.WriteLine($"{i + 1} - {shields[i].Name}");
+                }
+
+                var index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                Hero.EquipShield(index);
+            }
+            else if (keyboardInput == "7")
+            {
+                Hero.UnEquipShield();
+            }
         }
 
         private void Fight()
         {
             var damageCalculator = new DamageCalculator();
             var monsterSelector = new MonsterSelector();
+            var achievementManager = new AchievementManager();
             var enemy = monsterSelector.SelectMonsterBasedOnWeekDay();
 
-            var fight = new Fight(Hero, enemy, damageCalculator);
+            var fight = new Fight(Hero, enemy, damageCalculator, achievementManager);
 
             fight.Start();
         }

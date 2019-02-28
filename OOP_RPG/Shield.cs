@@ -1,23 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace OOP_RPG
 {
-    public class Weapon : IWeapon
+    public class Shield : IShield
     {
         public string Name { get; }
-        public int Strength { get; }
+        public int Defense { get; }
         public int Price { get; }
         public int ResellValue { get; }
 
-        public Weapon(string name, int strength, int price, int resellValue)
+        public Shield(string name, int defense, int price, int resellValue)
         {
             Name = name;
-            Strength = strength;
+            Defense = defense;
             Price = price;
             ResellValue = resellValue;
         }
 
         public string GetDescription(bool useResellValue = false)
         {
-            return $"Name: {Name} - Str: {Strength} " +
+            return $"Name: {Name} - Def: {Defense} " +
                 $"- Price: {(useResellValue ? ResellValue : Price)}";
         }
     }
